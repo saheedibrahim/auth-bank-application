@@ -1,5 +1,6 @@
 import random
 import validation
+import database
 
 # register
 # - first name, last name, password, email
@@ -12,9 +13,9 @@ import validation
 
 # initializing the system
 
-database = {
-    2644894503: ['Saheed', 'Ibrahim', 'saolabram@gmail.com', 'taajirun', 5000]
-}
+# database = {
+#     2644894503: ['Saheed', 'Ibrahim', 'saolabram@gmail.com', 'taajirun', 5000]
+# }
 
 
 def init():
@@ -53,22 +54,49 @@ def login():
 def register():
     print("***** Register *****")
     email = input("What is your email? \n")
-    first_name = input("What is your first name? \n")
-    last_name = input("What is your last name? \n")
-    password = input("create a password for yourself \n")
+    is_valid_email_address = validation.email_address_validation(email)
+    if is_valid_email_address:
+        first_name = input("What is your first name? \n")
+    else:
+        print("Invalid email address")
+        register()
+    is_first_name_valid = validation.first_name_validation(first_name)
+    if is_first_name_valid:
+        last_name = input("What is your last name? \n")
+    else:
+        print("Invalid first name")
+        register()
+    is_last_name_valid = validation.last_name_validation(last_name)
+    if is_last_name_valid:
+        password = input("Create a password for yourself \n")
+    else:
+        print("one or more of the data above is invalid")
+        register()
+    is_password_valid = validation.password_validation(password)
+    if is_password_valid:
+        try:
+            account_number = generate_account_number()
+        except ValueError:
+            print("Account generation failed due to internet connection")
+    else:
+        print('Password invalid')
+        
 
-    try:
-        account_number = generate_account_number()
-    except ValueError:
-        print("Account generation failed due to internet connection")
-    database[account_number] = [first_name, last_name, email, password, 0]
-    print("Your account has been created")
-    print("== ==== ==== ==== ===")
-    print("Your account number is: %d" % account_number)
-    print("Make sure you keep it save")
-    print("== ==== ==== ==== ===")
+    is_user_created = database.create(account_number, [first_name, last_name, email, password, 0])
+    # database[account_number] = [first_name, last_name, email, password, 0]
+    if is_user_created:
+        print("Your account has been created")
+        print("== ==== ==== ==== ===")
+        print("Your account number is: %d" % account_number)
+        print("Make sure you keep it save")
+        print("== ==== ==== ==== ===")
+        login()
+    else:
+        print('unable to create an account')
+        register()
 
-    login()
+    # login()
+
 
 def bank_operation(user):
     print("Welcome %s %s" % (user[0], user[1]))
