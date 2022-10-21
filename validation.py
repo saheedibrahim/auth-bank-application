@@ -7,18 +7,18 @@ def account_number_validation(account_number):
     # if the account number is an integer
 
     if account_number:
-        if len(str(account_number)) == 10:
-            try:
-                int(account_number)
+        try:
+            int(account_number)
+            if len(str(account_number)) == 10:
                 return True
-            except ValueError:
-                print("Invalid account number")
-                return False
-            except TypeError:
-                print("Invalid account type")
-                return False
-        else:
-            print("Account number cannot be less or more than 10 digits")
+            # else:
+            #     print("Account number cannot be less or more than 10 digits")
+        except ValueError:
+            # print("Invalid account number")
+            return False
+        except TypeError:
+            # print("Invalid account type")
+            return False
     else:
         print("Account number is a required field")
         return False
@@ -37,10 +37,10 @@ def email_address_validation(email):
 
 
 def first_name_validation(first_name):
-        if first_name.isalpha():
-            return True
-        else:
-            return False
+    if first_name.isalpha():
+        return True
+    else:
+        return False
 
 
 def last_name_validation(last_name):
@@ -48,6 +48,7 @@ def last_name_validation(last_name):
         return True
     else:
         return False
+
 
 def password_validation(password):
     special_char = ['$', '@', '#', '%']
@@ -67,15 +68,6 @@ def password_validation(password):
     else:
         return True
 
-
-
-        try:
-            account_number = generate_account_number()
-        except ValueError:
-            print("Account generation failed due to internet connection")
-
-
     # is_last_name_valid = validation.last_name_validation(last_name)
     # if is_last_name_valid:
     #     password = input("Create a password: Password should contain a digit, uppercase, lowercase, special character, more than 8 character and less than 20\n")
-        
